@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import add from "../components/Home/add-button.png";
-import del from "../components/Home/delete.png";
+import del from "../components/Delete/delete.png"
+
 
 function Home() {
   const [Tasks, setTasks] = useState([
@@ -19,6 +20,29 @@ function Home() {
 
     setTasks([...Tasks,newTask])
   }
+  const deletebutton=(index)=>{
+    const newTask =[...Tasks];
+    newTask.splice(index,1);
+    setTasks(newTask);
+
+  }
+  useEffect(()=>{
+    if(Tasks.length==0){
+      return
+    }
+    localStorage.setItem('Tasks',JSON.stringify(Tasks));
+    
+  },[Tasks])
+
+  useEffect(()=>{
+    const Tasks = localStorage.getItem('Tasks');
+    if(Tasks){
+      setTasks(JSON.parse(Tasks));
+    }
+
+  },[''])
+
+  
   return (
     <div>
       <div>
@@ -29,10 +53,16 @@ function Home() {
           <div>
             <div className=" mx-5 flex justify-center mb-6 ">
               <div className=" bg-gray-300 rounded-sm p-1 w-80  mt-4  ">
-                {Tasks.map((Task, i) => {
+                {Tasks.map((Task, index) => {
                   return (
-                    <div className="bg-blue-600 rounded-sm m-2 mt-10 w-52 h-12 text-xl capitalize text-center p-2  mx-auto">
+                    <div className="bg-blue-600 rounded-sm m-2 mt-10 w-52 h-12 text-xl capitalize text-center p-2  mx-auto flex justify-between">
+                      <div>
                       <h2>{Task}</h2>
+                      </div>
+                      <div>
+                        <img src={del} className=" h-8 w-8" onClick={()=>deletebutton(index)}/>
+                        </div>
+
                     </div>
                   );
                 })}
