@@ -8,6 +8,7 @@ function Home() {
   ]);
   const [newTask ,setNewtasks] =useState('')
   const [error ,SetError] =useState('')
+  const [category ,SetCategory] =useState('')
 
   const addtask= ()=>{
     if(newTask===''){
@@ -18,7 +19,7 @@ function Home() {
       SetError(``)
     }
 
-    setTasks([...Tasks,newTask])
+    setTasks([...Tasks,{title :newTask ,category: category}])
   }
   const deletebutton=(index)=>{
     const newTask =[...Tasks];
@@ -54,10 +55,12 @@ function Home() {
             <div className=" mx-5 flex justify-center mb-6 ">
               <div className=" bg-gray-300 rounded-sm p-1 w-80  mt-4  ">
                 {Tasks.map((Task, index) => {
+                  const{title ,category}=Task
                   return (
                     <div className="bg-blue-600 rounded-sm m-2 mt-10 w-52 h-12 text-xl capitalize text-center p-2  mx-auto flex justify-between">
-                      <div>
-                      <h2>{Task}</h2>
+                      <div className="flex justify-evenly w-48">
+                      <div className=""><h2>{title}</h2></div>
+                      <div><h2>{category}</h2></div>
                       </div>
                       <div>
                         <img src={del} className=" h-8 w-8" onClick={()=>deletebutton(index)}/>
@@ -85,6 +88,15 @@ function Home() {
                 }}
                 className="text-center  bg-gray-300  rounded-r-sm  text-base"
               />
+              <div className="text-center   rounded-r-sm  text-base m-1">
+              <select className="text-center p-1 bg-gray-300 rounded-sm m-1 " value={category} onChange={(e)=>{
+              SetCategory(e.target.value)} }>
+              <option className="">category</option>
+              <option>learning</option>
+              <option>playing</option>
+              <option>office</option>
+              </select>
+              </div>
               <div>
               <img src={add} alt="add" className="h-10" onClick={addtask} />
               </div>
